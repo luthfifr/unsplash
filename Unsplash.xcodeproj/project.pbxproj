@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -128,7 +128,6 @@
 				F0D45E06DDD20CA77ED5C48B /* Pods-Unsplash.debug.xcconfig */,
 				01B8DD2187C77A630CB73470 /* Pods-Unsplash.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -145,6 +144,7 @@
 				42FD3C0C23FD290800658629 /* Resources */,
 				42FD3C2523FD292500658629 /* Bump Up Build Number */,
 				2B8159F445B8663732A335C9 /* [CP] Embed Pods Frameworks */,
+				42FD3C2F23FD2D6000658629 /* Swiftlint Run Script */,
 			);
 			buildRules = (
 			);
@@ -257,6 +257,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "BUILDNUM=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nNEWBUILDNUM=$(($BUILDNUM + 1))\nNEWBUILDNUMSTRING=`echo $NEWBUILDNUM`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $NEWBUILDNUMSTRING\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n\n";
+		};
+		42FD3C2F23FD2D6000658629 /* Swiftlint Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Swiftlint Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
