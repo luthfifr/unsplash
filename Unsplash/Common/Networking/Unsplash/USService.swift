@@ -28,7 +28,9 @@ struct USService: USServiceType {
         return provider.rx.request(.getPhotoData(query))
             .parseResponse({ (responseString: String) in
                 guard var response = USResponse.deserialize(from: responseString) else {
-                    return USResponse()
+                    var model = USResponse()
+                    model.responseString = responseString
+                    return model
                 }
 
                 response.status = .success

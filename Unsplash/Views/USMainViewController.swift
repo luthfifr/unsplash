@@ -18,7 +18,17 @@ class USMainViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private var searchResultData: USResponse? {
         didSet {
-            self.collectionView.reloadData()
+            guard let data = searchResultData else {
+                return
+            }
+            switch data.status {
+            case .success:
+                self.collectionView.reloadData()
+            case .failure:
+                var errModel = USServiceError()
+                errModel.responseString = data.responseString
+                showError(errModel)
+            }
         }
     }
 
@@ -61,9 +71,10 @@ extension USMainViewController {
         viewModel.uiEvents.subscribe(onNext: { [weak self] event in
             guard let `self` = self else { return }
             switch event {
-            case .requestDataSuccess(let response):
-                self.searchResultData = response
-            case .requestDataFailure(let error): break
+            case .requestDataSuccess:
+                self.searchResultData = self.viewModel.responseData
+            case .requestDataFailure(let error):
+                self.showError(error)
             default: break
             }
         }).disposed(by: disposeBag)
@@ -109,6 +120,22 @@ extension USMainViewController {
                 make.top.leading.trailing.bottom.equalToSuperview()
             })
         }
+    }
+    
+    private func showError(_ error: USServiceError?) {
+        var alertModel = UIAlertModel(style: .alert)
+        guard let error = error else {
+            return
+        }
+        alertModel.message = error.responseString ?? String()
+        alertModel.title = "Request Data Failure"
+        alertModel.actions = [UIAlertActionModel(title: "OK", style: .cancel)]
+        self.showAlert(with: alertModel)
+        .asObservable()
+        .subscribe(onNext: { selectedActionIdx in
+        //handle the action here
+            print("alert action index = \(selectedActionIdx)")
+        }).disposed(by: self.disposeBag)
     }
 }
 

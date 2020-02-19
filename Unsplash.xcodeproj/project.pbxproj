@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		426AF38A23FD4EFA0047F121 /* USMainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426AF38923FD4EFA0047F121 /* USMainCollectionViewCell.swift */; };
+		426AF38C23FD54AE0047F121 /* Extension+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426AF38B23FD54AE0047F121 /* Extension+UIViewController.swift */; };
+		426AF38F23FD54DC0047F121 /* UIAlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426AF38E23FD54DC0047F121 /* UIAlertModel.swift */; };
 		42FD3C1223FD290800658629 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FD3C1123FD290800658629 /* AppDelegate.swift */; };
 		42FD3C1423FD290800658629 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FD3C1323FD290800658629 /* SceneDelegate.swift */; };
 		42FD3C1B23FD290A00658629 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42FD3C1A23FD290A00658629 /* Assets.xcassets */; };
@@ -28,6 +30,8 @@
 /* Begin PBXFileReference section */
 		01B8DD2187C77A630CB73470 /* Pods-Unsplash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unsplash.release.xcconfig"; path = "Target Support Files/Pods-Unsplash/Pods-Unsplash.release.xcconfig"; sourceTree = "<group>"; };
 		426AF38923FD4EFA0047F121 /* USMainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USMainCollectionViewCell.swift; sourceTree = "<group>"; };
+		426AF38B23FD54AE0047F121 /* Extension+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIViewController.swift"; sourceTree = "<group>"; };
+		426AF38E23FD54DC0047F121 /* UIAlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertModel.swift; sourceTree = "<group>"; };
 		42FD3C0E23FD290800658629 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42FD3C1123FD290800658629 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42FD3C1323FD290800658629 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,6 +64,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		426AF38D23FD54CE0047F121 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				426AF38E23FD54DC0047F121 /* UIAlertModel.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		42FD3C0523FD290800658629 = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +119,7 @@
 		42FD3C2723FD29F100658629 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				426AF38D23FD54CE0047F121 /* UI */,
 				42FD3C4123FD335600658629 /* Unsplash */,
 				42FD3C3423FD2E7E00658629 /* Error */,
 			);
@@ -152,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				42FD3C3823FD2F0B00658629 /* Extension+MoyaResponse.swift */,
+				426AF38B23FD54AE0047F121 /* Extension+UIViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -344,12 +358,14 @@
 			files = (
 				42FD3C1223FD290800658629 /* AppDelegate.swift in Sources */,
 				42FD3C3E23FD306600658629 /* USService.swift in Sources */,
+				426AF38F23FD54DC0047F121 /* UIAlertModel.swift in Sources */,
 				42FD3C3C23FD305600658629 /* USTarget.swift in Sources */,
 				42FD3C3123FD2DFB00658629 /* USMoyaProvider.swift in Sources */,
 				42FD3C2E23FD2AE400658629 /* USMainViewModel.swift in Sources */,
 				42FD3C4023FD310F00658629 /* USConstants.swift in Sources */,
 				42FD3C4323FD336C00658629 /* USResponse.swift in Sources */,
 				42FD3C1423FD290800658629 /* SceneDelegate.swift in Sources */,
+				426AF38C23FD54AE0047F121 /* Extension+UIViewController.swift in Sources */,
 				426AF38A23FD4EFA0047F121 /* USMainCollectionViewCell.swift in Sources */,
 				42FD3C3923FD2F0B00658629 /* Extension+MoyaResponse.swift in Sources */,
 				42FD3C3623FD2E9400658629 /* USServiceError.swift in Sources */,

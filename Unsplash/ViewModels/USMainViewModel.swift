@@ -12,7 +12,7 @@ import RxSwift
 enum USMainViewModelEvent: Equatable {
     case getPhotoData(_ query: String?)
     case requestDataFailure(_ error: USServiceError?)
-    case requestDataSuccess(_ response: USResponse?)
+    case requestDataSuccess
 
     static func == (lhs: USMainViewModelEvent, rhs: USMainViewModelEvent) -> Bool {
         switch (lhs, rhs) {
@@ -27,11 +27,13 @@ enum USMainViewModelEvent: Equatable {
 protocol USMainViewModelType {
     var uiEvents: PublishSubject<USMainViewModelEvent> { get }
     var viewModelEvents: PublishSubject<USMainViewModelEvent> { get }
+    var responseData: USResponse? { get }
 }
 
 final class USMainViewModel: USMainViewModelType {
     let uiEvents = PublishSubject<USMainViewModelEvent>()
     let viewModelEvents = PublishSubject<USMainViewModelEvent>()
+    var responseData: USResponse?
     private let disposeBag = DisposeBag()
     private let service = USService()
 
@@ -64,8 +66,9 @@ extension USMainViewModel {
                     self.uiEvents
                         .onNext(.requestDataFailure(error))
                 case .succeeded(let response):
+                    self.responseData = response
                     self.uiEvents
-                        .onNext(.requestDataSuccess(response))
+                        .onNext(.requestDataSuccess)
                 }
             }).disposed(by: disposeBag)
     }

@@ -30,7 +30,7 @@ final class USMainCollectionViewCell: UICollectionViewCell {
 
         setupView()
     }
-    
+
     override func prepareForReuse() {
         imgView.sd_cancelCurrentImageLoad()
     }
