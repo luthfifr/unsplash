@@ -88,12 +88,12 @@ struct USResponse: HandyJSON {
         var photos: String?
         var likes: String?
     }
+}
 
-    struct USResultURL: HandyJSON {
-        var raw: String?
-        var full: String?
-        var regular: String?
-        var small: String?
-        var thumb: String?
-    }
+struct USResultURL: HandyJSON {
+    var raw: String?
+    var full: String?
+    var regular: String?
+    var small: String?
+    var thumb: String?
 }
