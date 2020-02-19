@@ -9,11 +9,11 @@
 import RxSwift
 import Moya
 
-protocol USCurrencyLayerType {
+protocol USServiceType {
     func getPhotoData(_ query: String?) -> Observable<USNetworkEvent<USResponse>>
 }
 
-struct USCurrencyLayerService: USCurrencyLayerType {
+struct USService: USServiceType {
     private let provider: MoyaProvider<USTarget>
 
     init() {
