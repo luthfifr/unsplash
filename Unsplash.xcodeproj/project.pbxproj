@@ -17,6 +17,10 @@
 		42FD3C3323FD2E2A00658629 /* USNetworkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FD3C3223FD2E2A00658629 /* USNetworkEvent.swift */; };
 		42FD3C3623FD2E9400658629 /* USServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FD3C3523FD2E9400658629 /* USServiceError.swift */; };
 		42FD3C3923FD2F0B00658629 /* Extension+MoyaResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FD3C3823FD2F0B00658629 /* Extension+MoyaResponse.swift */; };
+		42FD3C3C23FD305600658629 /* USTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FD3C3B23FD305600658629 /* USTarget.swift */; };
+		42FD3C3E23FD306600658629 /* USService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FD3C3D23FD306600658629 /* USService.swift */; };
+		42FD3C4023FD310F00658629 /* USConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FD3C3F23FD310F00658629 /* USConstants.swift */; };
+		42FD3C4323FD336C00658629 /* USResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FD3C4223FD336C00658629 /* USResponse.swift */; };
 		5E7F3A278DF081D49B0284E6 /* Pods_Unsplash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69882AA9DE054B86BBCE0D46 /* Pods_Unsplash.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +38,10 @@
 		42FD3C3223FD2E2A00658629 /* USNetworkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USNetworkEvent.swift; sourceTree = "<group>"; };
 		42FD3C3523FD2E9400658629 /* USServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USServiceError.swift; sourceTree = "<group>"; };
 		42FD3C3823FD2F0B00658629 /* Extension+MoyaResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+MoyaResponse.swift"; sourceTree = "<group>"; };
+		42FD3C3B23FD305600658629 /* USTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USTarget.swift; sourceTree = "<group>"; };
+		42FD3C3D23FD306600658629 /* USService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USService.swift; sourceTree = "<group>"; };
+		42FD3C3F23FD310F00658629 /* USConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USConstants.swift; sourceTree = "<group>"; };
+		42FD3C4223FD336C00658629 /* USResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USResponse.swift; sourceTree = "<group>"; };
 		69882AA9DE054B86BBCE0D46 /* Pods_Unsplash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Unsplash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0D45E06DDD20CA77ED5C48B /* Pods-Unsplash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unsplash.debug.xcconfig"; path = "Target Support Files/Pods-Unsplash/Pods-Unsplash.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,6 +104,7 @@
 		42FD3C2723FD29F100658629 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				42FD3C4123FD335600658629 /* Unsplash */,
 				42FD3C3423FD2E7E00658629 /* Error */,
 			);
 			path = Models;
@@ -113,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				42FD3C2A23FD2A1800658629 /* Networking */,
+				42FD3C3F23FD310F00658629 /* USConstants.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -122,6 +132,7 @@
 			children = (
 				42FD3C3023FD2DFB00658629 /* USMoyaProvider.swift */,
 				42FD3C3223FD2E2A00658629 /* USNetworkEvent.swift */,
+				42FD3C3A23FD303000658629 /* Unsplash */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -140,6 +151,23 @@
 				42FD3C3823FD2F0B00658629 /* Extension+MoyaResponse.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		42FD3C3A23FD303000658629 /* Unsplash */ = {
+			isa = PBXGroup;
+			children = (
+				42FD3C3B23FD305600658629 /* USTarget.swift */,
+				42FD3C3D23FD306600658629 /* USService.swift */,
+			);
+			path = Unsplash;
+			sourceTree = "<group>";
+		};
+		42FD3C4123FD335600658629 /* Unsplash */ = {
+			isa = PBXGroup;
+			children = (
+				42FD3C4223FD336C00658629 /* USResponse.swift */,
+			);
+			path = Unsplash;
 			sourceTree = "<group>";
 		};
 		CF15677670FAA8F8E8791BA3 /* Frameworks */ = {
@@ -312,8 +340,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				42FD3C1223FD290800658629 /* AppDelegate.swift in Sources */,
+				42FD3C3E23FD306600658629 /* USService.swift in Sources */,
+				42FD3C3C23FD305600658629 /* USTarget.swift in Sources */,
 				42FD3C3123FD2DFB00658629 /* USMoyaProvider.swift in Sources */,
 				42FD3C2E23FD2AE400658629 /* USMainViewModel.swift in Sources */,
+				42FD3C4023FD310F00658629 /* USConstants.swift in Sources */,
+				42FD3C4323FD336C00658629 /* USResponse.swift in Sources */,
 				42FD3C1423FD290800658629 /* SceneDelegate.swift in Sources */,
 				42FD3C3923FD2F0B00658629 /* Extension+MoyaResponse.swift in Sources */,
 				42FD3C3623FD2E9400658629 /* USServiceError.swift in Sources */,
