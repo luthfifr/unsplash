@@ -93,6 +93,7 @@ extension USMainViewController {
             searchBar.barStyle = .default
             searchBar.sizeToFit()
             searchBar.delegate = self
+            searchBar.searchTextField.textColor = .white
             searchBar.searchTextField.delegate = self
         }
     }
