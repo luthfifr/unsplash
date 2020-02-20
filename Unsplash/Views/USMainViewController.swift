@@ -34,7 +34,7 @@ class USMainViewController: UIViewController {
     }
 
     private var collectionView: UICollectionView!
-    private var searchBar: UISearchBar!
+    private var searchController: UISearchController!
 
     private let cellID = String(describing: CollectionViewCell.self)
     private let headerID = String(describing: CollectionViewHeader.self)
@@ -57,6 +57,8 @@ class USMainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = "Search Image"
+
         setupViews()
         setupEvents()
     }
@@ -65,7 +67,7 @@ class USMainViewController: UIViewController {
 // MARK: - Private Methods
 extension USMainViewController {
     private func setupViews() {
-        setupSerachBar()
+        setupSearchController()
         setupCollectionView()
     }
 
@@ -82,17 +84,15 @@ extension USMainViewController {
         }).disposed(by: disposeBag)
     }
 
-    private func setupSerachBar() {
-        if searchBar == nil {
-            searchBar = UISearchBar(frame: .zero)
-            searchBar.placeholder = "Type here..."
-            searchBar.tintColor = .gray
-            searchBar.barTintColor = .black
-            searchBar.barStyle = .default
-            searchBar.sizeToFit()
-            searchBar.delegate = self
-            searchBar.searchTextField.textColor = .white
-            searchBar.searchTextField.delegate = self
+    private func setupSearchController() {
+        if searchController == nil {
+            let searchController = UISearchController(searchResultsController: nil)
+            searchController.obscuresBackgroundDuringPresentation = false
+            searchController.searchBar.placeholder = "Type here..."
+            searchController.searchBar.delegate = self
+            searchController.searchBar.searchTextField.delegate = self
+            navigationItem.searchController = searchController
+            definesPresentationContext = true
         }
     }
 
@@ -109,6 +109,9 @@ extension USMainViewController {
             collectionView.register(CollectionViewHeader.self,
                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                     withReuseIdentifier: headerID)
+            let customLayout = USCustomLayout()
+            customLayout.delegate = self
+            collectionView.setCollectionViewLayout(customLayout, animated: true, completion: nil)
             collectionView.allowsSelection = false
             collectionView.allowsMultipleSelection = false
             collectionView.backgroundColor = .white
@@ -180,17 +183,6 @@ extension USMainViewController: UICollectionViewDataSource {
         }
 
         return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                     withReuseIdentifier: headerID,
-                                                                     for: indexPath)
-        header.addSubview(searchBar)
-
-        return header
     }
 }
 
