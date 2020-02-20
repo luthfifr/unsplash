@@ -98,20 +98,15 @@ extension USMainViewController {
 
     private func setupCollectionView() {
         if collectionView == nil {
-            let collectionViewFlowLayout = UICollectionViewFlowLayout()
-            collectionViewFlowLayout.minimumLineSpacing = Constants.cellSpacing
-            collectionViewFlowLayout.minimumInteritemSpacing = Constants.cellSpacing
-            collectionViewFlowLayout.itemSize = CGSize(width: 150, height: 150)
+            let customLayout = USCustomLayout()
+            customLayout.delegate = self
             collectionView = UICollectionView(frame: .zero,
-                                              collectionViewLayout: collectionViewFlowLayout)
+                                              collectionViewLayout: customLayout)
             collectionView.register(CollectionViewCell.self,
                                     forCellWithReuseIdentifier: cellID)
             collectionView.register(CollectionViewHeader.self,
                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                     withReuseIdentifier: headerID)
-            let customLayout = USCustomLayout()
-            customLayout.delegate = self
-            collectionView.setCollectionViewLayout(customLayout, animated: true, completion: nil)
             collectionView.allowsSelection = false
             collectionView.allowsMultipleSelection = false
             collectionView.backgroundColor = .white
@@ -202,19 +197,19 @@ extension USMainViewController: UICollectionViewDelegate {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension USMainViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 40)
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (collectionView.frame.width/2) - 10, height: 100)
-    }
-}
+//extension USMainViewController: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView,
+//                        layout collectionViewLayout: UICollectionViewLayout,
+//                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: collectionView.frame.width, height: 40)
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView,
+//                        layout collectionViewLayout: UICollectionViewLayout,
+//                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSize(width: (collectionView.frame.width/2) - 10, height: 100)
+//    }
+//}
 
 extension USMainViewController: USCustomLayoutDelegate {
   func collectionView(_ collectionView: UICollectionView,
