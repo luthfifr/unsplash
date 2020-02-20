@@ -11,13 +11,16 @@ import RxSwift
 
 enum USMainViewModelEvent: Equatable {
     case getPhotoData(_ query: String?)
+    case loadMorePage
     case requestDataFailure(_ error: USServiceError?)
     case requestDataSuccess
 
     static func == (lhs: USMainViewModelEvent, rhs: USMainViewModelEvent) -> Bool {
         switch (lhs, rhs) {
         case (getPhotoData, getPhotoData),
-             (requestDataFailure, requestDataFailure):
+             (loadMorePage, loadMorePage),
+             (requestDataFailure, requestDataFailure),
+             (requestDataSuccess, requestDataSuccess):
             return true
         default: return false
         }
@@ -34,8 +37,12 @@ final class USMainViewModel: USMainViewModelType {
     let uiEvents = PublishSubject<USMainViewModelEvent>()
     let viewModelEvents = PublishSubject<USMainViewModelEvent>()
     var responseData: USResponse?
+
     private let disposeBag = DisposeBag()
     private let service = USService()
+
+    private var currentQuery: String?
+    private var currentPage: Int?
 
     init() {
         setupEvents()
@@ -50,13 +57,18 @@ extension USMainViewModel {
             switch event {
             case .getPhotoData(let query):
                 self.getPhotoData(query)
+            case .loadMorePage:
+                self.loadMorePage()
             default: break
             }
         }).disposed(by: disposeBag)
     }
 
-    private func getPhotoData(_ query: String?) {
-        service.getPhotoData(query)
+    private func getPhotoData(_ query: String?, _ page: Int? = 1) {
+        currentPage = page
+        currentQuery = query
+
+        service.getPhotoData(currentQuery, currentPage)
             .asObservable()
             .subscribe(onNext: { [weak self] event in
                 guard let `self` = self else { return }
@@ -71,5 +83,15 @@ extension USMainViewModel {
                         .onNext(.requestDataSuccess)
                 }
             }).disposed(by: disposeBag)
+    }
+
+    private func loadMorePage() {
+        guard let data = responseData,
+            let totalPages = data.totalPages,
+            var currPage = currentPage else { return }
+        if currPage < totalPages {
+            currPage += 1
+            getPhotoData(currentQuery, currPage)
+        }
     }
 }

@@ -10,7 +10,7 @@ import RxSwift
 import Moya
 
 protocol USServiceType {
-    func getPhotoData(_ query: String?) -> Observable<USNetworkEvent<USResponse>>
+    func getPhotoData(_ query: String?, _ page: Int?) -> Observable<USNetworkEvent<USResponse>>
 }
 
 struct USService: USServiceType {
@@ -24,8 +24,8 @@ struct USService: USServiceType {
         self.provider = provider
     }
 
-    func getPhotoData(_ query: String?) -> Observable<USNetworkEvent<USResponse>> {
-        return provider.rx.request(.getPhotoData(query))
+    func getPhotoData(_ query: String?, _ page: Int?) -> Observable<USNetworkEvent<USResponse>> {
+        return provider.rx.request(.getPhotoData(query, page))
             .parseResponse({ (responseString: String) in
                 guard var response = USResponse.deserialize(from: responseString) else {
                     var model = USResponse()

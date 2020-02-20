@@ -35,8 +35,7 @@ final class USCustomLayout: UICollectionViewLayout {
     override func prepare() {
         super.prepare()
 
-        guard cache.isEmpty,
-            let collectionView = collectionView else {
+        guard let collectionView = collectionView else {
             return
         }
 

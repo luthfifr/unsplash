@@ -24,7 +24,18 @@ class USMainViewController: UIViewController {
             }
             switch data.status {
             case .success:
-                self.collectionView.reloadData()
+                if resultDataArr == nil {
+                    resultDataArr = data.results
+                } else {
+                    guard let dataResults = data.results else {
+                        return
+                    }
+                    for result in dataResults {
+                        resultDataArr?.append(result)
+                    }
+                }
+                implementCustomDelegate()
+                collectionView.reloadData()
             case .failure:
                 var errModel = USServiceError()
                 errModel.responseString = data.responseString
@@ -32,6 +43,8 @@ class USMainViewController: UIViewController {
             }
         }
     }
+
+    private var resultDataArr: [USResult]?
 
     private var collectionView: UICollectionView!
     private var searchController: UISearchController!
@@ -69,6 +82,7 @@ extension USMainViewController {
     private func setupViews() {
         setupSearchController()
         setupCollectionView()
+        implementCustomDelegate()
     }
 
     private func setupEvents() {
@@ -99,7 +113,7 @@ extension USMainViewController {
     private func setupCollectionView() {
         if collectionView == nil {
             let customLayout = USCustomLayout()
-            customLayout.delegate = self
+//            customLayout.delegate = self
             collectionView = UICollectionView(frame: .zero,
                                               collectionViewLayout: customLayout)
             collectionView.register(CollectionViewCell.self,
@@ -120,6 +134,12 @@ extension USMainViewController {
             collectionView.snp.makeConstraints({ make in
                 make.top.leading.trailing.bottom.equalToSuperview()
             })
+        }
+    }
+
+    private func implementCustomDelegate() {
+        if let layout = collectionView?.collectionViewLayout as? USCustomLayout {
+          layout.delegate = self
         }
     }
 
@@ -163,7 +183,7 @@ extension USMainViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let data = searchResultData, let results = data.results else {
+        guard let results = resultDataArr else {
             return 0
         }
         return results.count
@@ -186,21 +206,24 @@ extension USMainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? CollectionViewCell,
-            let urls = searchResultData?
-                .results?[indexPath.item]
-                .urls else {
+            let results = resultDataArr,
+            let urls = results[indexPath.item].urls else {
             return
         }
 
         cell.setupData(with: urls)
+
+        if indexPath.item == results.count - 1 {
+            viewModel.viewModelEvents.onNext(.loadMorePage)
+        }
     }
 }
 
 extension USMainViewController: USCustomLayoutDelegate {
   func collectionView(_ collectionView: UICollectionView,
                       heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-    guard let items = searchResultData?.results?[indexPath.item],
-        let itemWidth = items.width, let itemHeight = items.height else {
+    guard let item = resultDataArr?[indexPath.item],
+        let itemWidth = item.width, let itemHeight = item.height else {
         return 0
     }
 

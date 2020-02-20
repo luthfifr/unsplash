@@ -9,7 +9,7 @@
 import Moya
 
 enum USTarget {
-    case getPhotoData(_ query: String?)
+    case getPhotoData(_ query: String?, _ page: Int?)
 }
 
 extension USTarget: TargetType {
@@ -33,8 +33,8 @@ extension USTarget: TargetType {
 
     var task: Task {
         switch self {
-        case .getPhotoData(let query):
-            return .requestParameters(parameters: getParameters(query),
+        case let .getPhotoData(query, page):
+            return .requestParameters(parameters: getParameters(query, page),
                                       encoding: URLEncoding.queryString)
         }
     }
@@ -49,10 +49,10 @@ extension USTarget: TargetType {
 }
 
 extension USTarget {
-    func getParameters(_ query: String?) -> [String: Any] {
+    func getParameters(_ query: String?, _ page: Int?) -> [String: Any] {
         var params = [String: Any]()
 
-        params[USConstants.ParamKeys.page] = USConstants.ParamValues.defaultPage
+        params[USConstants.ParamKeys.page] = page ?? USConstants.ParamValues.defaultPage
         params[USConstants.ParamKeys.query] = query ?? String()
 
         return params
