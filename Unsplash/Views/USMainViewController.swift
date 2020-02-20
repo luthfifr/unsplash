@@ -222,3 +222,18 @@ extension USMainViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: (collectionView.frame.width/2) - 10, height: 100)
     }
 }
+
+extension USMainViewController: USCustomLayoutDelegate {
+  func collectionView(_ collectionView: UICollectionView,
+                      heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+    guard let items = searchResultData?.results?[indexPath.item],
+        let itemWidth = items.width, let itemHeight = items.height else {
+        return 0
+    }
+
+    let insets = collectionView.contentInset
+    let width = collectionView.bounds.width - (insets.left + insets.right)
+
+    return CGFloat((itemHeight/itemWidth)) * width
+  }
+}
