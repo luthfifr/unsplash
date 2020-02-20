@@ -13,7 +13,7 @@ import SnapKit
 class USMainViewController: UIViewController {
     typealias CollectionViewCell = USMainCollectionViewCell
     typealias CollectionViewHeader = UICollectionReusableView
-    typealias Constants = USConstants.MainVC
+    typealias Constants = USConstants.Main
 
     private var viewModel: USMainViewModel!
     private let disposeBag = DisposeBag()
@@ -196,21 +196,6 @@ extension USMainViewController: UICollectionViewDelegate {
     }
 }
 
-// MARK: - UICollectionViewDelegateFlowLayout
-//extension USMainViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView,
-//                        layout collectionViewLayout: UICollectionViewLayout,
-//                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: collectionView.frame.width, height: 40)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView,
-//                        layout collectionViewLayout: UICollectionViewLayout,
-//                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: (collectionView.frame.width/2) - 10, height: 100)
-//    }
-//}
-
 extension USMainViewController: USCustomLayoutDelegate {
   func collectionView(_ collectionView: UICollectionView,
                       heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
@@ -220,8 +205,9 @@ extension USMainViewController: USCustomLayoutDelegate {
     }
 
     let insets = collectionView.contentInset
-    let width = collectionView.bounds.width - (insets.left + insets.right)
+    let cellWidth = (collectionView.bounds.width - (insets.left + insets.right)) / CGFloat(Constants.numberOfColumn)
+    let aspectRatio: CGFloat = CGFloat((itemHeight/itemWidth))
 
-    return CGFloat((itemHeight/itemWidth)) * width
+    return aspectRatio * cellWidth
   }
 }

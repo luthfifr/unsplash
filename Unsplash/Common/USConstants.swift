@@ -25,7 +25,10 @@ struct USConstants {
         static let defaultPage = 1
     }
 
-    struct MainVC {
+    struct Main {
         static let cellSpacing: CGFloat = 10
+        static let numberOfColumn = 2
+        static let cellPadding: CGFloat = 6
+        static let defaultCellHeight: CGFloat = 180
     }
 }

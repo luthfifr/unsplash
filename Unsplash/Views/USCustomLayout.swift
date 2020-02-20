@@ -12,11 +12,11 @@ protocol USCustomLayoutDelegate: AnyObject {
   func collectionView( _ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat
 }
 
-class USCustomLayout: UICollectionViewLayout {
+final class USCustomLayout: UICollectionViewLayout {
+    typealias Constants = USConstants.Main
+
     weak var delegate: USCustomLayoutDelegate?
 
-    private let numberOfColumns = 2
-    private let cellPadding: CGFloat = 6
     private var cache: [UICollectionViewLayoutAttributes] = []
     private var contentHeight: CGFloat = 0
     private var contentWidth: CGFloat {
@@ -40,28 +40,29 @@ class USCustomLayout: UICollectionViewLayout {
             return
         }
 
-        let columnWidth = contentWidth / CGFloat(numberOfColumns)
+        let columnWidth = contentWidth / CGFloat(Constants.numberOfColumn)
         var column = 0
-        var yOffset: [CGFloat] = .init(repeating: 0, count: numberOfColumns)
+        var yOffset: [CGFloat] = .init(repeating: 0, count: Constants.numberOfColumn)
         var xOffset: [CGFloat] = []
 
-        for column in 0..<numberOfColumns {
+        for column in 0..<Constants.numberOfColumn {
           xOffset.append(CGFloat(column) * columnWidth)
         }
 
         for item in 0..<collectionView.numberOfItems(inSection: 0) {
             let indexPath = IndexPath(item: item, section: 0)
 
-            let photoHeight = delegate?.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath) ?? 180
+            // swiftlint:disable:next line_length
+            let photoHeight = delegate?.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath) ?? Constants.defaultCellHeight
 
-            let height = cellPadding * 2 + photoHeight
+            let height = (Constants.cellPadding * 2) + photoHeight
 
             let frame = CGRect(x: xOffset[column],
                                y: yOffset[column],
                                width: columnWidth,
                                height: height)
 
-            let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
+            let insetFrame = frame.insetBy(dx: Constants.cellPadding, dy: Constants.cellPadding)
 
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = insetFrame
@@ -72,7 +73,7 @@ class USCustomLayout: UICollectionViewLayout {
 
             yOffset[column] = yOffset[column] + height
 
-            column = column < (numberOfColumns - 1) ? (column + 1) : 0
+            column = column < (Constants.numberOfColumn - 1) ? (column + 1) : 0
         }
     }
 
