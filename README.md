@@ -14,4 +14,6 @@ This repo is the answer of Cermati coding challenge.
 - [x] Each image must have loading progress when in fetching state.
 
 ### UI:
-![CurrencyCalc_Screnshot](CurrencyCalc_Screnshot.png)
+![Unsplash_Screenshot_1](unsplash_1.png)
+![Unsplash_Screenshot_2](unsplash_2.png)
+![Unsplash_Screenshot_3](unsplash_3.png)
