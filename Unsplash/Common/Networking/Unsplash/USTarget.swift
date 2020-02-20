@@ -44,7 +44,7 @@ extension USTarget: TargetType {
     }
 
     var headers: [String: String]? {
-        return nil
+        return ["Authorization": "Client-ID \(USConstants.API.accessKey)"]
     }
 }
 

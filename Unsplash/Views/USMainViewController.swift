@@ -13,6 +13,7 @@ import SnapKit
 class USMainViewController: UIViewController {
     typealias CollectionViewCell = USMainCollectionViewCell
     typealias CollectionViewHeader = UICollectionReusableView
+    typealias Constants = USConstants.MainVC
 
     private var viewModel: USMainViewModel!
     private let disposeBag = DisposeBag()
@@ -57,6 +58,7 @@ class USMainViewController: UIViewController {
         super.viewDidLoad()
 
         setupViews()
+        setupEvents()
     }
 }
 
@@ -85,22 +87,22 @@ extension USMainViewController {
             searchBar = UISearchBar(frame: .zero)
             searchBar.placeholder = "Type here..."
             searchBar.tintColor = .gray
-            searchBar.barTintColor = .white
+            searchBar.barTintColor = .black
             searchBar.barStyle = .default
-            searchBar.isUserInteractionEnabled = true
             searchBar.sizeToFit()
             searchBar.delegate = self
+            searchBar.searchTextField.delegate = self
         }
     }
 
     private func setupCollectionView() {
         if collectionView == nil {
-            let collectionViewLayout = UICollectionViewFlowLayout()
-            collectionViewLayout.minimumLineSpacing = 10
-            collectionViewLayout.minimumInteritemSpacing = 10
-            collectionViewLayout.itemSize = CGSize(width: 150, height: 150)
+            let collectionViewFlowLayout = UICollectionViewFlowLayout()
+            collectionViewFlowLayout.minimumLineSpacing = Constants.cellSpacing
+            collectionViewFlowLayout.minimumInteritemSpacing = Constants.cellSpacing
+            collectionViewFlowLayout.itemSize = CGSize(width: 150, height: 150)
             collectionView = UICollectionView(frame: .zero,
-                                              collectionViewLayout: collectionViewLayout)
+                                              collectionViewLayout: collectionViewFlowLayout)
             collectionView.register(CollectionViewCell.self,
                                     forCellWithReuseIdentifier: cellID)
             collectionView.register(CollectionViewHeader.self,
@@ -121,7 +123,7 @@ extension USMainViewController {
             })
         }
     }
-    
+
     private func showError(_ error: USServiceError?) {
         var alertModel = UIAlertModel(style: .alert)
         guard let error = error else {
@@ -142,7 +144,16 @@ extension USMainViewController {
 // MARK: - UISearchBarDelegate
 extension USMainViewController: UISearchBarDelegate {
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        viewModel.viewModelEvents.onNext(.getPhotoData(searchBar.text))
+        viewModel
+            .viewModelEvents
+            .onNext(.getPhotoData(searchBar.text))
+    }
+}
+
+extension USMainViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 
@@ -204,9 +215,10 @@ extension USMainViewController: UICollectionViewDelegateFlowLayout {
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 40)
     }
+
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 100)
+        return CGSize(width: (collectionView.frame.width/2) - 10, height: 100)
     }
 }

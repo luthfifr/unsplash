@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct USConstants {
     struct API {
@@ -22,5 +23,9 @@ struct USConstants {
 
     struct ParamValues {
         static let defaultPage = 1
+    }
+
+    struct MainVC {
+        static let cellSpacing: CGFloat = 10
     }
 }
