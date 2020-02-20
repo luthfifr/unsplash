@@ -57,6 +57,8 @@ class USMainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = "Search Image"
+
         setupViews()
         setupEvents()
     }
