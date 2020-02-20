@@ -26,6 +26,7 @@ class USMainViewController: UIViewController {
             case .success:
                 if resultDataArr == nil {
                     resultDataArr = data.results
+                    scrollToTop()
                 } else {
                     guard let dataResults = data.results else {
                         return
@@ -34,7 +35,6 @@ class USMainViewController: UIViewController {
                         resultDataArr?.append(result)
                     }
                 }
-                implementCustomDelegate()
                 collectionView.reloadData()
             case .failure:
                 var errModel = USServiceError()
@@ -89,7 +89,11 @@ extension USMainViewController {
         viewModel.uiEvents.subscribe(onNext: { [weak self] event in
             guard let `self` = self else { return }
             switch event {
-            case .requestDataSuccess:
+            case .requestDataSuccess(let isNewQuery):
+                if isNewQuery {
+                    self.resultDataArr = nil
+                    self.searchResultData = nil
+                }
                 self.searchResultData = self.viewModel.responseData
             case .requestDataFailure(let error):
                 self.showError(error)
@@ -141,6 +145,19 @@ extension USMainViewController {
         if let layout = collectionView?.collectionViewLayout as? USCustomLayout {
           layout.delegate = self
         }
+    }
+
+    func scrollToTop() {
+        DispatchQueue.main.async {
+             if let results = self.resultDataArr,
+                results.count > 0 {
+                let indexPath = IndexPath(row: 0, section: 0)
+                self.collectionView.scrollToItem(at: indexPath,
+                                                 at: .top,
+                                                 animated: true)
+
+             }
+         }
     }
 
     private func showError(_ error: USServiceError?) {
