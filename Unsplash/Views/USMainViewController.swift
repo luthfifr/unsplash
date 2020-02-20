@@ -13,7 +13,7 @@ import SnapKit
 class USMainViewController: UIViewController {
     typealias CollectionViewCell = USMainCollectionViewCell
     typealias CollectionViewHeader = UICollectionReusableView
-    typealias Constants = USConstants.MainVC
+    typealias Constants = USConstants.Main
 
     private var viewModel: USMainViewModel!
     private let disposeBag = DisposeBag()
@@ -34,7 +34,7 @@ class USMainViewController: UIViewController {
     }
 
     private var collectionView: UICollectionView!
-    private var searchBar: UISearchBar!
+    private var searchController: UISearchController!
 
     private let cellID = String(describing: CollectionViewCell.self)
     private let headerID = String(describing: CollectionViewHeader.self)
@@ -67,7 +67,7 @@ class USMainViewController: UIViewController {
 // MARK: - Private Methods
 extension USMainViewController {
     private func setupViews() {
-        setupSerachBar()
+        setupSearchController()
         setupCollectionView()
     }
 
@@ -84,28 +84,24 @@ extension USMainViewController {
         }).disposed(by: disposeBag)
     }
 
-    private func setupSerachBar() {
-        if searchBar == nil {
-            searchBar = UISearchBar(frame: .zero)
-            searchBar.placeholder = "Type here..."
-            searchBar.tintColor = .gray
-            searchBar.barTintColor = .black
-            searchBar.barStyle = .default
-            searchBar.sizeToFit()
-            searchBar.delegate = self
-            searchBar.searchTextField.textColor = .white
-            searchBar.searchTextField.delegate = self
+    private func setupSearchController() {
+        if searchController == nil {
+            let searchController = UISearchController(searchResultsController: nil)
+            searchController.obscuresBackgroundDuringPresentation = false
+            searchController.searchBar.placeholder = "Type here..."
+            searchController.searchBar.delegate = self
+            searchController.searchBar.searchTextField.delegate = self
+            navigationItem.searchController = searchController
+            definesPresentationContext = true
         }
     }
 
     private func setupCollectionView() {
         if collectionView == nil {
-            let collectionViewFlowLayout = UICollectionViewFlowLayout()
-            collectionViewFlowLayout.minimumLineSpacing = Constants.cellSpacing
-            collectionViewFlowLayout.minimumInteritemSpacing = Constants.cellSpacing
-            collectionViewFlowLayout.itemSize = CGSize(width: 150, height: 150)
+            let customLayout = USCustomLayout()
+            customLayout.delegate = self
             collectionView = UICollectionView(frame: .zero,
-                                              collectionViewLayout: collectionViewFlowLayout)
+                                              collectionViewLayout: customLayout)
             collectionView.register(CollectionViewCell.self,
                                     forCellWithReuseIdentifier: cellID)
             collectionView.register(CollectionViewHeader.self,
@@ -183,17 +179,6 @@ extension USMainViewController: UICollectionViewDataSource {
 
         return cell
     }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                     withReuseIdentifier: headerID,
-                                                                     for: indexPath)
-        header.addSubview(searchBar)
-
-        return header
-    }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -211,17 +196,18 @@ extension USMainViewController: UICollectionViewDelegate {
     }
 }
 
-// MARK: - UICollectionViewDelegateFlowLayout
-extension USMainViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 40)
+extension USMainViewController: USCustomLayoutDelegate {
+  func collectionView(_ collectionView: UICollectionView,
+                      heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+    guard let items = searchResultData?.results?[indexPath.item],
+        let itemWidth = items.width, let itemHeight = items.height else {
+        return 0
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (collectionView.frame.width/2) - 10, height: 100)
-    }
+    let insets = collectionView.contentInset
+    let cellWidth = (collectionView.bounds.width - (insets.left + insets.right)) / CGFloat(Constants.numberOfColumn)
+    let aspectRatio: CGFloat = CGFloat((itemHeight/itemWidth))
+
+    return aspectRatio * cellWidth
+  }
 }
