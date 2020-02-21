@@ -51,6 +51,8 @@ class USMainViewController: UIViewController {
 
     private let cellID = String(describing: CollectionViewCell.self)
     private let headerID = String(describing: CollectionViewHeader.self)
+    private var lastContentOffset: CGFloat = 0
+    private var isScrollingDown = false
 
     // MARK: - Initialization
     convenience init() {
@@ -218,6 +220,20 @@ extension USMainViewController: UICollectionViewDataSource {
     }
 }
 
+extension USMainViewController: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.lastContentOffset = scrollView.contentOffset.y
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if self.lastContentOffset < scrollView.contentOffset.y {
+            isScrollingDown = true
+        } else if self.lastContentOffset > scrollView.contentOffset.y {
+            isScrollingDown = false
+        }
+    }
+}
+
 // MARK: - UICollectionViewDelegate
 extension USMainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
@@ -230,7 +246,7 @@ extension USMainViewController: UICollectionViewDelegate {
 
         cell.setupData(with: urls)
 
-        if indexPath.item == results.count - 1 {
+        if isScrollingDown && indexPath.item == results.count - 1 {
             viewModel.viewModelEvents.onNext(.loadMorePage)
         }
     }
