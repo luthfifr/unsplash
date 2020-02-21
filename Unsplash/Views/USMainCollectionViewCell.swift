@@ -63,6 +63,12 @@ extension USMainCollectionViewCell {
         imgView.sd_imageIndicator = SDWebImageProgressIndicator.default
         imgView.sd_imageIndicator = SDWebImageActivityIndicator.large
         imgView.sd_imageIndicator = SDWebImageActivityIndicator.gray
-        imgView.sd_setImage(with: url, completed: nil)
+//        imgView.sd_setImage(with: url, completed: nil)
+        imgView.sd_setImage(with: url,
+                            placeholderImage: UIImage(named: "unsplash-logo"),
+                            options: .continueInBackground,
+                            context: nil,
+                            progress: nil,
+                            completed: nil)
     }
 }

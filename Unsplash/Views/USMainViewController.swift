@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import SnapKit
+import Toast_Swift
 
 class USMainViewController: UIViewController {
     typealias CollectionViewCell = USMainCollectionViewCell
@@ -36,6 +37,7 @@ class USMainViewController: UIViewController {
                     }
                 }
                 collectionView.reloadData()
+                collectionView.collectionViewLayout.invalidateLayout()
             case .failure:
                 var errModel = USServiceError()
                 errModel.responseString = data.responseString
@@ -76,6 +78,7 @@ class USMainViewController: UIViewController {
 
         setupViews()
         setupEvents()
+        setupToast()
     }
 }
 
@@ -99,6 +102,8 @@ extension USMainViewController {
                 self.searchResultData = self.viewModel.responseData
             case .requestDataFailure(let error):
                 self.showError(error)
+            case .showToast(let page):
+                self.showToast(page)
             default: break
             }
         }).disposed(by: disposeBag)
@@ -149,7 +154,13 @@ extension USMainViewController {
         }
     }
 
-    func scrollToTop() {
+    private func setupToast() {
+        let toastManager = ToastManager.shared
+        toastManager.position = .bottom
+        toastManager.duration = 1
+    }
+
+    private func scrollToTop() {
         DispatchQueue.main.async {
              if let results = self.resultDataArr,
                 results.count > 0 {
@@ -160,6 +171,10 @@ extension USMainViewController {
 
              }
          }
+    }
+
+    private func showToast(_ page: Int? = nil) {
+        view.makeToast("Fetching Page \(page ?? 1)")
     }
 
     private func showError(_ error: USServiceError?) {
@@ -182,6 +197,7 @@ extension USMainViewController {
 // MARK: - UISearchBarDelegate
 extension USMainViewController: UISearchBarDelegate {
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        showToast(nil)
         viewModel
             .viewModelEvents
             .onNext(.getPhotoData(searchBar.text))

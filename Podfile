@@ -15,5 +15,6 @@ target 'Unsplash' do
     pod 'RxCocoa'
     pod 'SwiftLint', '~> 0.33.0'
     pod 'SDWebImage'
+    pod 'Toast-Swift'
 
 end

@@ -14,13 +14,15 @@ enum USMainViewModelEvent: Equatable {
     case loadMorePage
     case requestDataFailure(_ error: USServiceError?)
     case requestDataSuccess(_ isNewQuery: Bool)
+    case showToast(_ page: Int?)
 
     static func == (lhs: USMainViewModelEvent, rhs: USMainViewModelEvent) -> Bool {
         switch (lhs, rhs) {
         case (getPhotoData, getPhotoData),
              (loadMorePage, loadMorePage),
              (requestDataFailure, requestDataFailure),
-             (requestDataSuccess, requestDataSuccess):
+             (requestDataSuccess, requestDataSuccess),
+             (showToast, showToast):
             return true
         default: return false
         }
@@ -96,6 +98,7 @@ extension USMainViewModel {
             var currPage = currentPage else { return }
         if currPage < totalPages {
             currPage += 1
+            uiEvents.onNext(.showToast(currPage))
             getPhotoData(currentQuery, false, currPage)
         }
     }
