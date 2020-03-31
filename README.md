@@ -1,5 +1,5 @@
 # Unsplash
-This repo is the answer of Cermati coding challenge.
+This repo special feature is adaptive collection view custom layout such as in Pinterest. If you want to take a look about it, it's in `customLayout` branch.
 
 ### Special Notes:
 - Please run `$ pod install` after downloading it from email. It should ensure the podfiles are installed correctly for the project.
